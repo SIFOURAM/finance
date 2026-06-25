@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Finance Tunai SI FOUR AM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
+        .card { background-color: #1e1e1e; border-radius: 0.5rem; border: 1px solid #333; padding: 1rem; }
+    </style>
+</head>
+<body class="pb-10">
+
+    <div class="bg-emerald-600 p-4 border-b border-neutral-800 sticky top-0 z-50 shadow-md">
+        <h1 class="text-xl font-black text-center tracking-wider text-white">FINANCE TUNAI</h1>
+    </div>
+
+    <div class="p-4 space-y-4 max-w-lg mx-auto">
+        
+        <div class="card space-y-3">
+            <div>
+                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Penerima</label>
+                <select id="picPenerima" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
+                    <option value="" disabled selected>-- Pilih PIC Penerima --</option>
+                    <option value="Muhammad Zulfikar">Muhammad Zulfikar</option>
+                    <option value="Sandita">Sandita</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Pemberi</label>
+                <select id="picPemberi" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
+                    <option value="" disabled selected>-- Pilih PIC Pemberi --</option>
+                    <option value="Alif">Alif</option>
+                    <option value="Rissa">Rissa</option>
+                    <option value="Devi">Devi</option>
+                </select>
+            </div>
+            
+            <div class="pt-2 border-t border-neutral-700">
+                <label class="text-xs text-emerald-400 uppercase font-bold block mb-2">Pilih Tanggal Tarik Data (Tunai)</label>
+                <div id="containerTanggal" class="space-y-2">
+                    <input type="date" class="input-tgl w-full bg-neutral-700 text-white rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-emerald-500">
+                </div>
+                <button onclick="tambahBarisTanggal()" class="w-full bg-neutral-700 hover:bg-neutral-600 text-white font-bold py-1.5 rounded text-xs mt-2 transition border border-neutral-500">➕ Tambah Tanggal</button>
+            </div>
+
+            <button onclick="tarikDataTotalTunai()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-emerald-500 transition mt-2 shadow-lg tracking-widest uppercase">CARI TOTAL TUNAI</button>
+        </div>
+
+        <div id="loading" class="text-center text-xs text-emerald-400 py-4 hidden font-bold">Mencari Data di Server...</div>
+
+        <div id="kalkulasiContent" class="card space-y-4 hidden border-emerald-500/30 bg-emerald-900/10">
+            
+            <div id="infoTransaksiHtml" class="text-xs text-gray-300 bg-black/40 p-2 rounded border border-neutral-700 max-h-32 overflow-y-auto"></div>
+
+            <div class="text-center">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL TUNAI (KASIR)</p>
+                <h2 id="valTotalTunai" class="text-3xl font-black text-emerald-400">Rp 0</h2>
+            </div>
+
+            <div class="pt-3 border-t border-neutral-700">
+                <div class="flex justify-between items-end mb-2">
+                    <label class="text-xs text-red-400 uppercase font-bold">Pengeluaran Operasional</label>
+                    <button onclick="tambahBarisPengeluaran()" class="bg-red-500/20 hover:bg-red-500/40 text-red-400 font-bold py-1 px-3 rounded text-[10px] transition border border-red-500/50">➕ Tambah</button>
+                </div>
+                
+                <div id="containerPengeluaran" class="space-y-2">
+                    </div>
+            </div>
+
+            <div class="pt-4 border-t-2 border-dashed border-neutral-600 text-center">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL PENGELUARAN</p>
+                <h3 id="valTotalPengeluaran" class="text-lg font-bold text-red-400 mb-2">Rp 0</h3>
+
+                <p class="text-[10px] text-white uppercase tracking-widest font-bold mt-4">SERAH TERIMA SETORAN BERSIH</p>
+                <h2 id="valSerahTerima" class="text-4xl font-black text-orange-500">Rp 0</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================================
+        // WAJIB GANTI URL DI BAWAH DENGAN URL DEPLOYMENT APPS SCRIPT
+        // ==========================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvn6AbP3JVDx0H6sHMk3o9xxNCsRZo3V12U8yeW-a_3F08ly92u6RGpBsO3lTPYk0N/exec"; 
+
+        let databaseLaporan = [];
+        let angkaTotalTunai = 0;
+
+        function tambahBarisTanggal() {
+            const container = document.getElementById('containerTanggal');
+            const div = document.createElement('div');
+            div.className = "flex items-center gap-2";
+            div.innerHTML = `
+                <input type="date" class="input-tgl w-full bg-neutral-700 text-white rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-emerald-500">
+                <button onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded font-bold text-xs">X</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
+
+        function ekstrakAngka(str) {
+            if(!str) return 0;
+            return parseInt(str.toString().replace(/[^0-9]/g, '')) || 0;
+        }
+
+        async function tarikDataTotalTunai() {
+            const picPen = document.getElementById('picPenerima').value;
+            const picPem = document.getElementById('picPemberi').value;
+            
+            if (!picPen || !picPem) {
+                alert("Harap pilih PIC Penerima dan PIC Pemberi terlebih dahulu!");
+                return;
+            }
+
+            const inputsTgl = document.querySelectorAll('.input-tgl');
+            let tglDicari = [];
+            inputsTgl.forEach(inp => { if(inp.value) tglDicari.push(inp.value); });
+
+            if(tglDicari.length === 0) {
+                alert("Harap masukkan setidaknya satu tanggal untuk dicari!");
+                return;
+            }
+
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('kalkulasiContent').classList.add('hidden');
+
+            try {
+                // Fetch data secara real-time
+                const response = await fetch(`${SCRIPT_URL}?action=getAllData`);
+                const data = await response.json();
+                databaseLaporan = data.laporan;
+
+                angkaTotalTunai = 0;
+                let logTransaksiHtml = "<b>Rincian Ditemukan:</b><br>";
+                let adaData = false;
+
+                // Loop setiap tanggal yang di-input user
+                tglDicari.forEach(tglStr => {
+                    const dataTglIni = databaseLaporan.filter(d => d.tanggal === tglStr);
+                    if(dataTglIni.length > 0) {
+                        adaData = true;
+                        let subtotalTglIni = 0;
+                        dataTglIni.forEach(item => {
+                            subtotalTglIni += item.cash;
+                        });
+                        angkaTotalTunai += subtotalTglIni;
+                        logTransaksiHtml += `- ${tglStr} : Rp ${formatRupiah(subtotalTglIni).replace('Rp','').trim()}<br>`;
+                    } else {
+                        logTransaksiHtml += `- ${tglStr} : Tidak ada transaksi<br>`;
+                    }
+                });
+
+                document.getElementById('infoTransaksiHtml').innerHTML = logTransaksiHtml;
+                document.getElementById('valTotalTunai').innerText = formatRupiah(angkaTotalTunai);
+
+                // Tampilkan Hasil Kalkulasi
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('kalkulasiContent').classList.remove('hidden');
+
+                // Update Total Keseluruhan
+                hitungHasilAkhir();
+
+            } catch (error) {
+                alert("Gagal mengambil data dari server. Periksa koneksi internet Anda.");
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
+
+        function tambahBarisPengeluaran() {
+            const container = document.getElementById('containerPengeluaran');
+            const div = document.createElement('div');
+            div.className = "flex items-center gap-2 baris-pengeluaran";
+            div.innerHTML = `
+                <input type="text" placeholder="Keterangan..." class="w-1/2 bg-neutral-800 text-white rounded p-2 text-xs border border-neutral-600 focus:border-red-500 outline-none">
+                <input type="number" placeholder="Nominal (Rp)" oninput="hitungHasilAkhir()" class="input-nominal-pengeluaran w-1/2 bg-neutral-800 text-red-400 font-bold rounded p-2 text-xs border border-neutral-600 focus:border-red-500 outline-none">
+                <button onclick="hapusBarisPengeluaran(this)" class="bg-red-600 text-white px-3 py-1.5 rounded font-bold text-xs">X</button>
+            `;
+            container.appendChild(div);
+            hitungHasilAkhir();
+        }
+
+        function hapusBarisPengeluaran(btnElem) {
+            btnElem.parentElement.remove();
+            hitungHasilAkhir();
+        }
+
+        function hitungHasilAkhir() {
+            let totalPengeluaran = 0;
+            const inputsNominal = document.querySelectorAll('.input-nominal-pengeluaran');
+            inputsNominal.forEach(inp => {
+                totalPengeluaran += ekstrakAngka(inp.value);
+            });
+
+            const serahTerima = angkaTotalTunai - totalPengeluaran;
+
+            document.getElementById('valTotalPengeluaran').innerText = formatRupiah(totalPengeluaran);
+            document.getElementById('valSerahTerima').innerText = formatRupiah(serahTerima);
+        }
+
+    </script>
+</body>
+</html>
