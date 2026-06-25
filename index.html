@@ -3,41 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SI FOUR AM SETOR TUNAI</title>
+    <title>Finance Tunai SI FOUR AM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-         body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
-        .card { background-color: #1e1e1e; border-radius: 0.5rem; border: 1px solid #333; padding: 0.75rem 1rem; }
-        .text-black-sifour { color: #111111; }
-        .text-orange-sifour { color: #f97316; }
-        .text-red-sifour { color: #FF0000; }
-        .bg-orange-sifour { background-color: #f97316; }
-        .terpilih-oren { background-color: #111111; color: #f97316; border-color: #f97316 !important; font-weight: bold;}
-        .error-merah { background-color: #fee2e2; color: #b91c1c; border-color: #ef4444 !important; animation: shake 0.5s;}
-        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
+        .card { background-color: #1e1e1e; border-radius: 0.5rem; border: 1px solid #333; padding: 1rem; }
+    </style>
 </head>
 <body class="pb-10">
 
-    <div class="bg-orange-sifour p-4 border-b border-neutral-800 sticky top-0 z-50 shadow-md">
-        <h1 class="text-xl font-black text-center tracking-wider text-black-sifour">SI FOUR AM SETOR TUNAI</h1>
+    <div class="bg-emerald-600 p-4 border-b border-neutral-800 sticky top-0 z-50 shadow-md">
+        <h1 class="text-xl font-black text-center tracking-wider text-white">FINANCE TUNAI</h1>
     </div>
 
     <div class="p-4 space-y-4 max-w-lg mx-auto">
         
         <div class="card space-y-3">
             <div>
-                <label class="text-xs text-orange-sifour uppercase font-bold block mb-1">PIC Penerima</label>
-                <select id="picPenerima" class="w-full bg-neutral-800 text-orange-sifour border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-color">
+                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Penerima</label>
+                <select id="picPenerima" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
                     <option value="" disabled selected>-- Pilih PIC Penerima --</option>
                     <option value="Muhammad Zulfikar">Muhammad Zulfikar</option>
                     <option value="Sandita">Sandita</option>
                 </select>
             </div>
             <div>
-                <label class="text-xs text-orange-sifour uppercase font-bold block mb-1">PIC Pemberi</label>
-                <select id="picPemberi" class="w-full bg-neutral-800 text-orange-sifour border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-color">
+                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Pemberi</label>
+                <select id="picPemberi" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
                     <option value="" disabled selected>-- Pilih PIC Pemberi --</option>
                     <option value="Alif">Alif</option>
                     <option value="Rissa">Rissa</option>
@@ -45,32 +37,32 @@
                 </select>
             </div>
             
-            <div class="pt-2 border-t border-color">
-                <label class="text-xs text-orange-sifour uppercase font-bold block mb-2">Pilih Tanggal Tarik Data (Tunai)</label>
+            <div class="pt-2 border-t border-neutral-700">
+                <label class="text-xs text-emerald-400 uppercase font-bold block mb-2">Pilih Tanggal Tarik Data (Tunai)</label>
                 <div id="containerTanggal" class="space-y-2">
-                    <input type="date" class="input-tgl w-full bg-neutral-700 text-orange-sifour rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-color">
+                    <input type="date" class="input-tgl w-full bg-neutral-700 text-white rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-emerald-500">
                 </div>
-                <button onclick="tambahBarisTanggal()" class="w-full bg-neutral-700 hover:bg-neutral-600 text-orange-sifour font-bold py-1.5 rounded text-xs mt-2 transition border border-color">➕ Tambah Tanggal</button>
+                <button onclick="tambahBarisTanggal()" class="w-full bg-neutral-700 hover:bg-neutral-600 text-white font-bold py-1.5 rounded text-xs mt-2 transition border border-neutral-500">➕ Tambah Tanggal</button>
             </div>
 
-            <button onclick="tarikDataTotalTunai()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-orange-sifour transition mt-2 shadow-lg tracking-widest uppercase">CARI TOTAL TUNAI</button>
+            <button onclick="tarikDataTotalTunai()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-emerald-500 transition mt-2 shadow-lg tracking-widest uppercase">CARI TOTAL TUNAI</button>
         </div>
 
-        <div id="loading" class="text-center text-xs text-orange-sifour py-4 hidden font-bold">Mencari Data di Server...</div>
+        <div id="loading" class="text-center text-xs text-emerald-400 py-4 hidden font-bold">Mencari Data di Server...</div>
 
-        <div id="kalkulasiContent" class="card space-y-4 hidden border-color/30 bg-emerald-900/10">
+        <div id="kalkulasiContent" class="card space-y-4 hidden border-emerald-500/30 bg-emerald-900/10">
             
-            <div id="infoTransaksiHtml" class="text-xs text-black-sifour bg-black/40 p-2 rounded border border-color max-h-32 overflow-y-auto"></div>
+            <div id="infoTransaksiHtml" class="text-xs text-gray-300 bg-black/40 p-2 rounded border border-neutral-700 max-h-32 overflow-y-auto"></div>
 
             <div class="text-center">
                 <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL TUNAI (KASIR)</p>
-                <h2 id="valTotalTunai" class="text-3xl font-black text-orange-sifour">Rp 0</h2>
+                <h2 id="valTotalTunai" class="text-3xl font-black text-emerald-400">Rp 0</h2>
             </div>
 
             <div class="pt-3 border-t border-neutral-700">
                 <div class="flex justify-between items-end mb-2">
                     <label class="text-xs text-red-400 uppercase font-bold">Pengeluaran Operasional</label>
-                    <button onclick="tambahBarisPengeluaran()" class="bg-red-500/20 hover:bg-red-500/40 text-red font-bold py-1 px-3 rounded text-[10px] transition border border-red-500/50">➕ Tambah</button>
+                    <button onclick="tambahBarisPengeluaran()" class="bg-red-500/20 hover:bg-red-500/40 text-red-400 font-bold py-1 px-3 rounded text-[10px] transition border border-red-500/50">➕ Tambah</button>
                 </div>
                 
                 <div id="containerPengeluaran" class="space-y-2">
@@ -78,7 +70,7 @@
             </div>
 
             <div class="pt-4 border-t-2 border-dashed border-neutral-600 text-center">
-                <p class="text-[10px] text-orange-sifour uppercase tracking-widest font-bold">TOTAL PENGELUARAN</p>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL PENGELUARAN</p>
                 <h3 id="valTotalPengeluaran" class="text-lg font-bold text-red-400 mb-2">Rp 0</h3>
 
                 <p class="text-[10px] text-white uppercase tracking-widest font-bold mt-4">SERAH TERIMA SETORAN BERSIH</p>
