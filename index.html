@@ -5,31 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Finance Tunai SI FOUR AM</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
-        .card { background-color: #1e1e1e; border-radius: 0.5rem; border: 1px solid #333; padding: 1rem; }
+        body { background-color: #f3f4f6; color: #111111; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
+        .card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 1.25rem; border: 1px solid #e5e7eb; }
+        /* Mematikan fungsi klik kanan & seleksi teks untuk keamanan dasar */
+        .no-select { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
     </style>
 </head>
-<body class="pb-10">
+<body class="pb-10 no-select bg-orange-50">
 
-    <div class="bg-emerald-600 p-4 border-b border-neutral-800 sticky top-0 z-50 shadow-md">
-        <h1 class="text-xl font-black text-center tracking-wider text-white">FINANCE TUNAI</h1>
+    <div class="bg-orange-500 p-4 border-b border-orange-600 sticky top-0 z-50 shadow-md text-white flex justify-between items-center">
+        <h1 class="text-xl font-black tracking-wider mx-auto">FINANCE TUNAI - SI FOUR AM</h1>
     </div>
 
-    <div class="p-4 space-y-4 max-w-lg mx-auto">
+    <div id="captureArea" class="p-4 space-y-4 max-w-lg mx-auto">
         
-        <div class="card space-y-3">
+        <div class="card space-y-3 border-orange-200">
             <div>
-                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Penerima</label>
-                <select id="picPenerima" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
+                <label class="text-xs text-gray-500 uppercase font-bold block mb-1">PIC Penerima</label>
+                <select id="picPenerima" class="w-full bg-gray-50 text-black border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-orange-500">
                     <option value="" disabled selected>-- Pilih PIC Penerima --</option>
                     <option value="Muhammad Zulfikar">Muhammad Zulfikar</option>
                     <option value="Sandita">Sandita</option>
                 </select>
             </div>
             <div>
-                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Pemberi</label>
-                <select id="picPemberi" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
+                <label class="text-xs text-gray-500 uppercase font-bold block mb-1">PIC Pemberi</label>
+                <select id="picPemberi" class="w-full bg-gray-50 text-black border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-orange-500">
                     <option value="" disabled selected>-- Pilih PIC Pemberi --</option>
                     <option value="Alif">Alif</option>
                     <option value="Rissa">Rissa</option>
@@ -37,66 +40,83 @@
                 </select>
             </div>
             
-            <div class="pt-2 border-t border-neutral-700">
-                <label class="text-xs text-emerald-400 uppercase font-bold block mb-2">Pilih Tanggal Tarik Data (Tunai)</label>
+            <div class="pt-2 border-t border-gray-200">
+                <label class="text-xs text-orange-600 uppercase font-bold block mb-2">Pilih Tanggal Tarik Data (Tunai)</label>
                 <div id="containerTanggal" class="space-y-2">
-                    <input type="date" class="input-tgl w-full bg-neutral-700 text-white rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-emerald-500">
+                    <input type="date" class="input-tgl w-full bg-gray-50 text-black rounded-lg p-2 text-sm border border-gray-300 focus:outline-none focus:border-orange-500">
                 </div>
-                <button onclick="tambahBarisTanggal()" class="w-full bg-neutral-700 hover:bg-neutral-600 text-white font-bold py-1.5 rounded text-xs mt-2 transition border border-neutral-500">➕ Tambah Tanggal</button>
+                <button onclick="tambahBarisTanggal()" class="w-full bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 rounded-lg text-xs mt-2 transition border border-gray-300">➕ Tambah Tanggal</button>
             </div>
 
-            <button onclick="tarikDataTotalTunai()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-emerald-500 transition mt-2 shadow-lg tracking-widest uppercase">CARI TOTAL TUNAI</button>
+            <button onclick="tarikDataTotalTunai()" class="w-full bg-orange-500 text-white font-black py-3 rounded-lg text-sm hover:bg-orange-600 transition mt-2 shadow-md tracking-widest uppercase">CARI TOTAL TUNAI</button>
         </div>
 
-        <div id="loading" class="text-center text-xs text-emerald-400 py-4 hidden font-bold">Mencari Data di Server...</div>
+        <div id="loading" class="text-center text-xs text-orange-600 py-4 hidden font-bold animate-pulse">Mencari Data & Mengalkulasi di Server...</div>
 
-        <div id="kalkulasiContent" class="card space-y-4 hidden border-emerald-500/30 bg-emerald-900/10">
+        <div id="kalkulasiContent" class="card space-y-4 hidden border-orange-400 bg-white">
             
-            <div id="infoTransaksiHtml" class="text-xs text-gray-300 bg-black/40 p-2 rounded border border-neutral-700 max-h-32 overflow-y-auto"></div>
+            <div id="infoTransaksiHtml" class="text-xs text-gray-700 bg-orange-50 p-3 rounded-lg border border-orange-200 max-h-36 overflow-y-auto space-y-1"></div>
 
-            <div class="text-center">
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL TUNAI (KASIR)</p>
-                <h2 id="valTotalTunai" class="text-3xl font-black text-emerald-400">Rp 0</h2>
+            <div class="text-center bg-gray-50 p-3 rounded-lg border border-gray-100">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">TOTAL TUNAI AKHIR (DARI DATABASE)</p>
+                <p class="text-xs text-gray-400 mb-1">(Cash + Bayar Hutang - Komisi)</p>
+                <h2 id="valTotalTunai" class="text-3xl font-black text-orange-600">Rp 0</h2>
             </div>
 
-            <div class="pt-3 border-t border-neutral-700">
+            <div class="pt-3 border-t border-gray-200">
                 <div class="flex justify-between items-end mb-2">
-                    <label class="text-xs text-red-400 uppercase font-bold">Pengeluaran Operasional</label>
-                    <button onclick="tambahBarisPengeluaran()" class="bg-red-500/20 hover:bg-red-500/40 text-red-400 font-bold py-1 px-3 rounded text-[10px] transition border border-red-500/50">➕ Tambah</button>
+                    <label class="text-xs text-gray-700 uppercase font-bold">Pengeluaran Operasional</label>
+                    <button onclick="tambahBarisPengeluaran()" class="bg-orange-100 hover:bg-orange-200 text-orange-600 font-bold py-1 px-3 rounded-lg text-[11px] transition border border-orange-300">➕ Tambah Kolom</button>
                 </div>
                 
                 <div id="containerPengeluaran" class="space-y-2">
                     </div>
             </div>
 
-            <div class="pt-4 border-t-2 border-dashed border-neutral-600 text-center">
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL PENGELUARAN</p>
-                <h3 id="valTotalPengeluaran" class="text-lg font-bold text-red-400 mb-2">Rp 0</h3>
+            <div class="pt-4 border-t-2 border-dashed border-gray-300 text-center">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">TOTAL PENGELUARAN</p>
+                <h3 id="valTotalPengeluaran" class="text-lg font-bold text-red-500 mb-2">Rp 0</h3>
 
-                <p class="text-[10px] text-white uppercase tracking-widest font-bold mt-4">SERAH TERIMA SETORAN BERSIH</p>
-                <h2 id="valSerahTerima" class="text-4xl font-black text-orange-500">Rp 0</h2>
+                <p class="text-[10px] text-gray-700 uppercase tracking-widest font-bold mt-4">SERAH TERIMA SETORAN BERSIH</p>
+                <h2 id="valSerahTerima" class="text-4xl font-black text-gray-900">Rp 0</h2>
             </div>
 
+            <div class="pt-2">
+                <button onclick="prosesKirimLaporan()" id="btnKirimLaporan" class="w-full bg-black text-white font-black py-3.5 rounded-lg text-sm hover:bg-neutral-800 transition shadow-lg tracking-widest uppercase">KIRIM LAPORAN</button>
+            </div>
         </div>
+    </div>
 
+    <div id="popupSukses" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 hidden" onclick="resetSemuaData()">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-2xl border-2 border-orange-500" onclick="event.stopPropagation()">
+            <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">✓</div>
+            <h3 class="text-lg font-black text-gray-900 mb-2">LAPORAN BERHASIL DIKIRIM!</h3>
+            <p class="text-xs text-gray-600 mb-6">Data laporan setor tunai telah tersimpan rapi secara realtime di database.</p>
+            
+            <div class="space-y-2">
+                <a id="btnBukaWA" target="_blank" class="w-full block bg-orange-500 text-white font-bold py-3 rounded-lg text-xs tracking-wider uppercase shadow hover:bg-orange-600 transition">Hubungkan ke WhatsApp</a>
+                <p class="text-[10px] text-gray-400 mt-4">Klik di mana saja di luar kotak ini untuk mereset data layar.</p>
+            </div>
+        </div>
     </div>
 
     <script>
         // ==========================================================
-        // WAJIB GANTI URL DI BAWAH DENGAN URL DEPLOYMENT APPS SCRIPT
+        // WAJIB PASTE URL APPS SCRIPT YANG SUDAH DI-DEPLOY DI SINI
         // ==========================================================
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvn6AbP3JVDx0H6sHMk3o9xxNCsRZo3V12U8yeW-a_3F08ly92u6RGpBsO3lTPYk0N/exec"; 
 
         let databaseLaporan = [];
         let angkaTotalTunai = 0;
+        let stringTanggalTerpilih = "";
 
         function tambahBarisTanggal() {
             const container = document.getElementById('containerTanggal');
             const div = document.createElement('div');
-            div.className = "flex items-center gap-2";
+            div.className = "flex items-center gap-2 animate-fadeIn";
             div.innerHTML = `
-                <input type="date" class="input-tgl w-full bg-neutral-700 text-white rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-emerald-500">
-                <button onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded font-bold text-xs">X</button>
+                <input type="date" class="input-tgl w-full bg-gray-50 text-black rounded-lg p-2 text-sm border border-gray-300 focus:outline-none focus:border-orange-500">
+                <button onclick="this.parentElement.remove()" class="bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow">X</button>
             `;
             container.appendChild(div);
         }
@@ -126,47 +146,57 @@
                 return;
             }
 
+            stringTanggalTerpilih = tglDicari.join(", ");
+
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('kalkulasiContent').classList.add('hidden');
 
             try {
-                // Fetch data secara real-time
+                // Tarik data kasir secara Real-Time dari Web App Apps Script
                 const response = await fetch(`${SCRIPT_URL}?action=getAllData`);
                 const data = await response.json();
                 databaseLaporan = data.laporan;
 
                 angkaTotalTunai = 0;
-                let logTransaksiHtml = "<b>Rincian Ditemukan:</b><br>";
-                let adaData = false;
+                let logTransaksiHtml = "<b>Rincian Komponen Data:</b><br>";
 
-                // Loop setiap tanggal yang di-input user
                 tglDicari.forEach(tglStr => {
                     const dataTglIni = databaseLaporan.filter(d => d.tanggal === tglStr);
                     if(dataTglIni.length > 0) {
-                        adaData = true;
-                        let subtotalTglIni = 0;
+                        let subCash = 0, subHutang = 0, subKomisi = 0;
                         dataTglIni.forEach(item => {
-                            subtotalTglIni += item.cash;
+                            subCash += (Number(item.cash) || 0);
+                            subHutang += (Number(item.bayar_hutang) || 0);
+                            subKomisi += (Number(item.komisi) || 0);
                         });
-                        angkaTotalTunai += subtotalTglIni;
-                        logTransaksiHtml += `- ${tglStr} : Rp ${formatRupiah(subtotalTglIni).replace('Rp','').trim()}<br>`;
+                        
+                        // RUMUS: Cash + Bayar Hutang - Total Komisi
+                        let totalHariIni = subCash + subHutang - subKomisi;
+                        angkaTotalTunai += totalHariIni;
+
+                        logTransaksiHtml += `
+                            <div class='border-b border-orange-200 pb-1 mb-1'>
+                                <b>📅 Tgl ${tglStr}</b><br>
+                                💰 Cash: Rp ${formatRupiah(subCash).replace('Rp','').trim()}<br>
+                                ➕ Bayar Hutang: Rp ${formatRupiah(subHutang).replace('Rp','').trim()}<br>
+                                ➖ Komisi: Rp ${formatRupiah(subKomisi).replace('Rp','').trim()}<br>
+                                <span class='text-orange-600 font-bold'>Subtotal: Rp ${formatRupiah(totalHariIni).replace('Rp','').trim()}</span>
+                            </div>`;
                     } else {
-                        logTransaksiHtml += `- ${tglStr} : Tidak ada transaksi<br>`;
+                        logTransaksiHtml += `⚡ ${tglStr} : Tidak ada transaksi ditemukan<br>`;
                     }
                 });
 
                 document.getElementById('infoTransaksiHtml').innerHTML = logTransaksiHtml;
                 document.getElementById('valTotalTunai').innerText = formatRupiah(angkaTotalTunai);
 
-                // Tampilkan Hasil Kalkulasi
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('kalkulasiContent').classList.remove('hidden');
 
-                // Update Total Keseluruhan
                 hitungHasilAkhir();
 
             } catch (error) {
-                alert("Gagal mengambil data dari server. Periksa koneksi internet Anda.");
+                alert("Gagal terhubung ke database spreadsheet. Periksa URL script anda.");
                 document.getElementById('loading').classList.add('hidden');
             }
         }
@@ -174,11 +204,11 @@
         function tambahBarisPengeluaran() {
             const container = document.getElementById('containerPengeluaran');
             const div = document.createElement('div');
-            div.className = "flex items-center gap-2 baris-pengeluaran";
+            div.className = "flex items-center gap-2 baris-pengeluaran animate-fadeIn";
             div.innerHTML = `
-                <input type="text" placeholder="Keterangan..." class="w-1/2 bg-neutral-800 text-white rounded p-2 text-xs border border-neutral-600 focus:border-red-500 outline-none">
-                <input type="number" placeholder="Nominal (Rp)" oninput="hitungHasilAkhir()" class="input-nominal-pengeluaran w-1/2 bg-neutral-800 text-red-400 font-bold rounded p-2 text-xs border border-neutral-600 focus:border-red-500 outline-none">
-                <button onclick="hapusBarisPengeluaran(this)" class="bg-red-600 text-white px-3 py-1.5 rounded font-bold text-xs">X</button>
+                <input type="text" placeholder="Keterangan..." class="input-ket-pengeluaran w-1/2 bg-gray-50 text-black rounded-lg p-2 text-xs border border-gray-300 focus:border-orange-500 outline-none">
+                <input type="number" placeholder="Nominal (Rp)" oninput="hitungHasilAkhir()" class="input-nominal-pengeluaran w-1/2 bg-gray-50 text-red-600 font-bold rounded-lg p-2 text-xs border border-gray-300 focus:border-orange-500 outline-none">
+                <button onclick="hapusBarisPengeluaran(this)" class="bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow">X</button>
             `;
             container.appendChild(div);
             hitungHasilAkhir();
@@ -202,6 +232,109 @@
             document.getElementById('valSerahTerima').innerText = formatRupiah(serahTerima);
         }
 
+        async function prosesKirimLaporan() {
+            const btn = document.getElementById('btnKirimLaporan');
+            btn.disabled = true;
+            btn.innerText = "SEDANG MEMPROSES...";
+            
+            const picPen = document.getElementById('picPenerima').value;
+            const picPem = document.getElementById('picPemberi').value;
+            const totalTunaiStr = document.getElementById('valTotalTunai').innerText;
+            const totalKeluarStr = document.getElementById('valTotalPengeluaran').innerText;
+            const serahTerimaStr = document.getElementById('valSerahTerima').innerText;
+
+            // Kumpulkan data pengeluaran
+            let listPengeluaran = [];
+            const barisPengeluaran = document.querySelectorAll('.baris-pengeluaran');
+            barisPengeluaran.forEach(b => {
+                const ket = b.querySelector('.input-ket-pengeluaran').value || "Tanpa Keterangan";
+                const nom = b.querySelector('.input-nominal-pengeluaran').value || 0;
+                listPengeluaran.push(`${ket} (Rp ${nom})`);
+            });
+            const pengeluaranDetailString = listPengeluaran.join(", ") || "Tidak ada pengeluaran";
+
+            // Tanggal & waktu saat ini
+            const sekarang = new Date();
+            const tglSkrg = sekarang.toISOString().split('T')[0];
+            const jamSkrg = sekarang.toTimeString().split(' ')[0];
+
+            try {
+                // Ambil Tangkapan Layar secara Otomatis via Client Side HTML2Canvas
+                const canvas = await html2canvas(document.getElementById('captureArea'));
+                const base64Image = canvas.toDataURL('image/png').split(',')[1];
+
+                // Kirim Payload JSON ke Google Apps Script
+                const payload = {
+                    action: "simpanSetoranTunai",
+                    tanggal: tglSkrg,
+                    jam: jamSkrg,
+                    picPenerima: picPen,
+                    picPemberi: picPem,
+                    totalTunai: totalTunaiStr,
+                    totalPengeluaran: totalKeluarStr,
+                    setoranBersih: serahTerimaStr,
+                    pengeluaranDetail: pengeluaranDetailString,
+                    detailTanggalSetoran: stringTanggalTerpilih,
+                    imageBlob: base64Image
+                };
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+
+                if(result.status === "success") {
+                    // Siapkan Teks Pesan Menarik untuk Diarahkan ke WhatsApp otomatis
+                    const waText = `*LAPORAN SETOR TUNAI - SI FOUR AM*%0A` +
+                                   `📅 Tanggal Input: ${tglSkrg} (${jamSkrg})%0A` +
+                                   `👤 PIC Penerima: ${picPen}%0A` +
+                                   `👤 PIC Pemberi: ${picPem}%0A` +
+                                   `----------------------------------------%0A` +
+                                   `📅 Periode Setoran: ${stringTanggalTerpilih}%0A` +
+                                   `💰 Total Tunai: ${totalTunaiStr}%0A` +
+                                   `❌ Total Pengeluaran: ${totalKeluarStr}%0A` +
+                                   `🧾 Detail Keluar: ${pengeluaranDetailString}%0A` +
+                                   `⭐ *SERAH TERIMA BERSIH: ${serahTerimaStr}*%0A` +
+                                   `----------------------------------------%0A` +
+                                   `🖼️ Link Bukti Layar: ${result.fileUrl}`;
+                    
+                    document.getElementById('btnBukaWA').href = `https://api.whatsapp.com/send?text=${waText}`;
+                    
+                    // Tampilkan Pop Up Sukses
+                    document.getElementById('popupSukses').classList.remove('hidden');
+                } else {
+                    alert("Gagal menyimpan ke database server.");
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan sistem pengiriman data.");
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "KIRIM LAPORAN";
+            }
+        }
+
+        function resetSemuaData() {
+            document.getElementById('popupSukses').classList.add('hidden');
+            document.getElementById('kalkulasiContent').classList.add('hidden');
+            document.getElementById('picPenerima').selectedIndex = 0;
+            document.getElementById('picPemberi').selectedIndex = 0;
+            document.getElementById('containerTanggal').innerHTML = `
+                <input type="date" class="input-tgl w-full bg-gray-50 text-black rounded-lg p-2 text-sm border border-gray-300 focus:outline-none focus:border-orange-500">
+            `;
+            document.getElementById('containerPengeluaran').innerHTML = "";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Fitur Keamanan Anti Inspect Tambahan pada Keyboard
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
+                e.preventDefault();
+                return false;
+            }
+        });
     </script>
 </body>
 </html>
