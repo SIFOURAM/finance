@@ -7,99 +7,101 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { background-color: #f3f4f6; color: #111111; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
-        .card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 1.25rem; border: 1px solid #e5e7eb; }
-        .no-select { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
+        .card { background-color: #1e1e1e; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); padding: 1.25rem; border: 1px solid #FFD700; }
+        .no-select { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+        ::-webkit-calendar-picker-indicator { filter: invert(1); }
+        .border-emas { border-color: #FFD700 !important; }
     </style>
 </head>
-<body class="pb-10 no-select bg-orange-50" oncontextmenu="return false;">
+<body class="pb-10 no-select" oncontextmenu="return false;">
 
-    <div class="bg-orange-500 p-4 border-b border-orange-600 sticky top-0 z-50 shadow-md text-white flex justify-between items-center">
-        <h1 class="text-xl font-black tracking-wider mx-auto">FINANCE TUNAI - SI FOUR AM</h1>
+    <div class="bg-[#f97316] p-4 border-b border-emas sticky top-0 z-50 shadow-md text-[#111111] flex justify-between items-center">
+        <h1 class="text-xl font-black tracking-wider mx-auto uppercase">Finance Tunai SI FOUR AM</h1>
     </div>
 
-    <div id="captureArea" class="p-4 space-y-4 max-w-lg mx-auto">
-        <div class="card space-y-3 border-orange-200">
+    <div id="captureArea" class="p-4 space-y-4 max-w-lg mx-auto bg-[#111111]">
+        <div class="card space-y-3">
             <div>
-                <label class="text-xs text-gray-500 uppercase font-bold block mb-1">PIC Penerima</label>
-                <select id="picPenerima" class="w-full bg-gray-50 text-black border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-orange-500">
+                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Penerima</label>
+                <select id="picPenerima" class="w-full bg-[#111111] text-white border border-emas rounded-lg p-2.5 text-sm focus:outline-none">
                     <option value="" disabled selected>-- Pilih PIC Penerima --</option>
                     <option value="Muhammad Zulfikar">Muhammad Zulfikar</option>
                     <option value="Sandita">Sandita</option>
                 </select>
             </div>
             <div>
-                <label class="text-xs text-gray-500 uppercase font-bold block mb-1">PIC Pemberi</label>
-                <select id="picPemberi" class="w-full bg-gray-50 text-black border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:border-orange-500">
+                <label class="text-xs text-gray-400 uppercase font-bold block mb-1">PIC Pemberi</label>
+                <select id="picPemberi" class="w-full bg-[#111111] text-white border border-emas rounded-lg p-2.5 text-sm focus:outline-none">
                     <option value="" disabled selected>-- Pilih PIC Pemberi --</option>
-                    <option value="Alif">Alif</option>
-                    <option value="Rissa">Rissa</option>
-                    <option value="Devi">Devi</option>
+                    <option value="Muhammad Ishaq Alif Hanif">Alif</option>
+                    <option value="Rissa Alfiani Putri">Rissa</option>
+                    <option value="Indri Devi Anjani">Devi</option>
                 </select>
             </div>
-            <div class="pt-2 border-t border-gray-200">
-                <label class="text-xs text-orange-600 uppercase font-bold block mb-2">Pilih Tanggal Tarik Data (Tunai)</label>
+            <div class="pt-2 border-t border-[#333333]">
+                <label class="text-xs text-[#f97316] uppercase font-bold block mb-2">Pilih Tanggal Tarik Data (Tunai)</label>
                 <div id="containerTanggal" class="space-y-2">
-                    <input type="date" class="input-tgl w-full bg-gray-50 text-black rounded-lg p-2 text-sm border border-gray-300 focus:outline-none focus:border-orange-500">
+                    <input type="date" class="input-tgl w-full bg-[#111111] text-white rounded-lg p-2 text-sm border border-emas focus:outline-none">
                 </div>
-                <button onclick="tambahBarisTanggal()" class="w-full bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 rounded-lg text-xs mt-2 transition border border-gray-300">➕ Tambah Tanggal</button>
+                <button onclick="tambahBarisTanggal()" class="w-full bg-[#2a2a2a] text-[#FFD700] font-bold py-2 rounded-lg text-xs mt-2 border border-emas">➕ Tambah Tanggal</button>
             </div>
-            <button onclick="tarikDataTotalTunai()" class="w-full bg-orange-500 text-white font-black py-3 rounded-lg text-sm hover:bg-orange-600 transition mt-2 shadow-md tracking-widest uppercase">CARI TOTAL TUNAI</button>
+            <button onclick="tarikDataTotalTunai()" class="w-full bg-gradient-to-r from-[#bf953f] to-[#fbf5b7] text-[#111111] font-black py-3 rounded-lg text-sm transition mt-2 shadow-md tracking-widest uppercase border border-emas">Cari Total Tunai</button>
         </div>
 
-        <div id="loading" class="text-center text-xs text-orange-600 py-4 hidden font-bold animate-pulse">Mencari Data & Mengalkulasi di Server...</div>
+        <div id="loading" class="text-center text-xs text-[#f97316] py-4 hidden font-bold animate-pulse">Mencari Data & Mengalkulasi di Server...</div>
 
-        <div id="kalkulasiContent" class="card space-y-4 hidden border-orange-400 bg-white">
-            <div id="infoTransaksiHtml" class="text-xs text-gray-700 bg-orange-50 p-3 rounded-lg border border-orange-200 max-h-36 overflow-y-auto space-y-1"></div>
-            <div class="text-center bg-gray-50 p-3 rounded-lg border border-gray-100">
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">TOTAL TUNAI AKHIR</p>
-                <p class="text-xs text-gray-400 mb-1">(Cash + Bayar Hutang - Komisi)</p>
-                <h2 id="valTotalTunai" class="text-3xl font-black text-orange-600">Rp 0</h2>
+        <div id="kalkulasiContent" class="card space-y-4 hidden border-emas">
+            <div id="infoTransaksiHtml" class="text-xs text-gray-300 bg-[#111111] p-3 rounded-lg border border-[#333] max-h-36 overflow-y-auto space-y-1"></div>
+            <div class="text-center bg-[#111111] p-3 rounded-lg border border-emas">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL TUNAI AKHIR</p>
+                <p class="text-xs text-gray-500 mb-1">(Cash + Bayar Hutang - Komisi)</p>
+                <h2 id="valTotalTunai" class="text-3xl font-black text-[#f97316]">Rp 0</h2>
             </div>
-            <div class="pt-3 border-t border-gray-200">
+            <div class="pt-3 border-t border-[#333]">
                 <div class="flex justify-between items-end mb-2">
-                    <label class="text-xs text-gray-700 uppercase font-bold">Pengeluaran Operasional</label>
-                    <button onclick="tambahBarisPengeluaran()" class="bg-orange-100 text-orange-600 font-bold py-1 px-3 rounded-lg text-[11px] border border-orange-300">➕ Tambah Kolom</button>
+                    <label class="text-xs text-gray-300 uppercase font-bold">Pengeluaran Operasional</label>
+                    <button onclick="tambahBarisPengeluaran()" class="bg-[#2a2a2a] text-[#f97316] font-bold py-1 px-3 rounded-lg text-[11px] border border-emas">➕ Tambah</button>
                 </div>
                 <div id="containerPengeluaran" class="space-y-2"></div>
             </div>
-            <div class="pt-4 border-t-2 border-dashed border-gray-300 text-center">
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">TOTAL PENGELUARAN</p>
+            <div class="pt-4 border-t-2 border-dashed border-emas text-center">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">TOTAL PENGELUARAN</p>
                 <h3 id="valTotalPengeluaran" class="text-lg font-bold text-red-500 mb-2">Rp 0</h3>
-                <p class="text-[10px] text-gray-700 uppercase tracking-widest font-bold mt-4">SERAH TERIMA SETORAN BERSIH</p>
-                <h2 id="valSerahTerima" class="text-4xl font-black text-gray-900">Rp 0</h2>
+                <p class="text-[10px] text-[#FFD700] uppercase tracking-widest font-bold mt-4">SERAH TERIMA SETORAN BERSIH</p>
+                <h2 id="valSerahTerima" class="text-4xl font-black text-white">Rp 0</h2>
             </div>
             <div class="pt-2">
-                <button onclick="prosesKirimLaporan()" id="btnKirimLaporan" class="w-full bg-black text-white font-black py-3.5 rounded-lg text-sm hover:bg-neutral-800 transition shadow-lg tracking-widest uppercase">KIRIM LAPORAN</button>
+                <button onclick="prosesKirimLaporan()" id="btnKirimLaporan" class="w-full bg-[#f97316] text-[#111111] font-black py-3.5 rounded-lg text-sm border border-emas transition shadow-lg tracking-widest uppercase">KIRIM LAPORAN</button>
             </div>
         </div>
     </div>
 
-    <div id="popupSukses" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 hidden" onclick="resetSemuaData()">
-        <div class="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-2xl border-2 border-orange-500" onclick="event.stopPropagation()">
-            <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">✓</div>
-            <h3 class="text-lg font-black text-gray-900 mb-2">LAPORAN BERHASIL DIKIRIM!</h3>
-            <p class="text-xs text-gray-600 mb-6">Data laporan setor tunai telah tersimpan rapi secara realtime di database.</p>
+    <div id="popupSukses" class="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 hidden" onclick="resetSemuaData()">
+        <div class="bg-[#1e1e1e] rounded-xl p-6 max-w-sm w-full text-center shadow-2xl border-2 border-emas" onclick="event.stopPropagation()">
+            <div class="w-16 h-16 bg-[#333] text-[#FFD700] rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">✓</div>
+            <h3 class="text-lg font-black text-white mb-2">LAPORAN BERHASIL DIKIRIM!</h3>
+            <p class="text-xs text-gray-400 mb-6">Data laporan setor tunai telah tersimpan rapi secara realtime di database.</p>
             <div class="space-y-2">
-                <a id="btnBukaWA" target="_blank" class="w-full block bg-orange-500 text-white font-bold py-3 rounded-lg text-xs tracking-wider uppercase shadow hover:bg-orange-600 transition">Hubungkan ke WhatsApp</a>
-                <p class="text-[10px] text-gray-400 mt-4">Klik di mana saja di luar kotak ini untuk mereset data layar.</p>
+                <a id="btnBukaWA" target="_blank" class="w-full block bg-gradient-to-r from-[#bf953f] to-[#fbf5b7] text-black font-bold py-3 rounded-lg text-xs tracking-wider uppercase shadow transition">Hubungkan ke WhatsApp</a>
+                <p class="text-[10px] text-gray-500 mt-4">Klik di mana saja di luar kotak ini untuk mereset data layar.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // ANTI INSPECT
+        // ANTI INSPECT TINGKAT TINGGI
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false; };
 
-        // WAJIB GANTI URL DEPLOYMENT APPS SCRIPT DI SINI! (PASTIKAN TIDAK ADA ENTER DI DALAM TANDA KUTIP)
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqsR5yNImxtwAZv4089fVbgxY1fg__dYVEecWxv_V1tZG8aA4Q67x4Qjd87Q4443It/exec"; 
+        // WAJIB GANTI URL DEPLOYMENT APPS SCRIPT DI SINI
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPYR4M0J8EugEaKE03gGHYOY0Y3CZja7hoWyVSBcVv_LUjjiCy64hDnhAZ4TMDpHny/exec"; 
 
         let databaseLaporan = []; let angkaTotalTunai = 0; let stringTanggalTerpilih = "";
 
         function tambahBarisTanggal() {
             const div = document.createElement('div'); div.className = "flex items-center gap-2 animate-fadeIn";
-            div.innerHTML = `<input type="date" class="input-tgl w-full bg-gray-50 text-black rounded-lg p-2 text-sm border border-gray-300 focus:outline-none focus:border-orange-500"><button onclick="this.parentElement.remove()" class="bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow">X</button>`;
+            div.innerHTML = `<input type="date" class="input-tgl w-full bg-[#111111] text-white rounded-lg p-2 text-sm border border-emas focus:outline-none"><button onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded-lg font-bold text-sm shadow border border-red-800">X</button>`;
             document.getElementById('containerTanggal').appendChild(div);
         }
 
@@ -116,8 +118,8 @@
             document.getElementById('loading').classList.remove('hidden'); document.getElementById('kalkulasiContent').classList.add('hidden');
 
             try {
-                const response = await fetch(`${SCRIPT_URL}?action=getAllData`); const data = await response.json();
-                databaseLaporan = data.laporan; angkaTotalTunai = 0; let logHTML = "<b>Rincian Komponen Data:</b><br>";
+                const response = await fetch(`${SCRIPT_URL}?action=getFinance`); const data = await response.json();
+                databaseLaporan = data.laporan; angkaTotalTunai = 0; let logHTML = "<b class='text-[#FFD700]'>Rincian Komponen Data:</b><br>";
 
                 tglDicari.forEach(tglStr => {
                     const dTgl = databaseLaporan.filter(d => d.tanggal === tglStr);
@@ -125,8 +127,8 @@
                         let subCash = 0, subHutang = 0, subKomisi = 0;
                         dTgl.forEach(i => { subCash += (Number(i.cash)||0); subHutang += (Number(i.bayar_hutang)||0); subKomisi += (Number(i.komisi)||0); });
                         let totalHariIni = subCash + subHutang - subKomisi; angkaTotalTunai += totalHariIni;
-                        logHTML += `<div class='border-b border-orange-200 pb-1 mb-1'><b>📅 Tgl ${tglStr}</b><br>💰 Cash: Rp ${formatRupiah(subCash).replace('Rp','').trim()}<br>➕ Bayar Hutang: Rp ${formatRupiah(subHutang).replace('Rp','').trim()}<br>➖ Komisi: Rp ${formatRupiah(subKomisi).replace('Rp','').trim()}<br><span class='text-orange-600 font-bold'>Subtotal: Rp ${formatRupiah(totalHariIni).replace('Rp','').trim()}</span></div>`;
-                    } else logHTML += `⚡ ${tglStr} : Tidak ada transaksi<br>`;
+                        logHTML += `<div class='border-b border-[#444] pb-1 mb-1 text-gray-300'><b>📅 Tgl ${tglStr}</b><br>💰 Cash: Rp ${formatRupiah(subCash).replace('Rp','').trim()}<br>➕ Hutang: Rp ${formatRupiah(subHutang).replace('Rp','').trim()}<br>➖ Komisi: Rp ${formatRupiah(subKomisi).replace('Rp','').trim()}<br><span class='text-[#f97316] font-bold'>Subtotal: Rp ${formatRupiah(totalHariIni).replace('Rp','').trim()}</span></div>`;
+                    } else logHTML += `<span class='text-gray-500'>⚡ ${tglStr} : Tidak ada transaksi</span><br>`;
                 });
 
                 document.getElementById('infoTransaksiHtml').innerHTML = logHTML; document.getElementById('valTotalTunai').innerText = formatRupiah(angkaTotalTunai);
@@ -136,7 +138,7 @@
 
         function tambahBarisPengeluaran() {
             const div = document.createElement('div'); div.className = "flex items-center gap-2 baris-pengeluaran animate-fadeIn";
-            div.innerHTML = `<input type="text" placeholder="Keterangan..." class="input-ket-pengeluaran w-1/2 bg-gray-50 text-black rounded-lg p-2 text-xs border border-gray-300 focus:border-orange-500 outline-none"><input type="number" placeholder="Nominal (Rp)" oninput="hitungHasilAkhir()" class="input-nominal-pengeluaran w-1/2 bg-gray-50 text-red-600 font-bold rounded-lg p-2 text-xs border border-gray-300 focus:border-orange-500 outline-none"><button onclick="hapusBarisPengeluaran(this)" class="bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow">X</button>`;
+            div.innerHTML = `<input type="text" placeholder="Ket..." class="input-ket-pengeluaran w-1/2 bg-[#111111] text-white rounded-lg p-2 text-xs border border-emas outline-none"><input type="number" placeholder="Rp" oninput="hitungHasilAkhir()" class="input-nominal-pengeluaran w-1/2 bg-[#111111] text-[#f97316] font-bold rounded-lg p-2 text-xs border border-emas outline-none"><button onclick="hapusBarisPengeluaran(this)" class="bg-red-600 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow border border-red-800">X</button>`;
             document.getElementById('containerPengeluaran').appendChild(div); hitungHasilAkhir();
         }
 
@@ -162,19 +164,19 @@
             try {
                 const canvas = await html2canvas(document.getElementById('captureArea'));
                 const b64 = canvas.toDataURL('image/png').split(',')[1];
-                const pld = { action: "simpanSetoranTunai", tanggal: tglSkrg, jam: jamSkrg, picPenerima: picPen, picPemberi: picPem, totalTunai: tTunai, totalPengeluaran: tKeluar, setoranBersih: sTerima, pengeluaranDetail: pDetail, detailTanggalSetoran: stringTanggalTerpilih, imageBlob: b64 };
+                const pld = { action: "simpanSetoranTunai", tanggal: tglSkrg, jam: jamSkrg, picPenerima: picPen, picPemberi: picPem, totalTunai: tTunai, bayarHutang: 0, setoranBersih: sTerima, pengeluaranDetail: pDetail, detailTanggalSetoran: stringTanggalTerpilih, imageBlob: b64 };
                 
                 const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(pld) });
                 const result = await res.json();
                 
                 if(result.status === "success") {
                     const waText = `*LAPORAN SETOR TUNAI - SI FOUR AM*%0A📅 Tgl Input: ${tglSkrg} (${jamSkrg})%0A👤 Penerima: ${picPen}%0A👤 Pemberi: ${picPem}%0A----------------------------------------%0A📅 Periode: ${stringTanggalTerpilih}%0A💰 Total Tunai: ${tTunai}%0A❌ Pengeluaran: ${tKeluar}%0A🧾 Detail Keluar: ${pDetail}%0A⭐ *BERSIH: ${sTerima}*%0A----------------------------------------%0A🖼️ Link Bukti: ${result.fileUrl}`;
-                    document.getElementById('btnBukaWA').href = `https://api.whatsapp.com/send?text=${waText}`; document.getElementById('popupSukses').classList.remove('hidden');
+                    document.getElementById('btnBukaWA').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`; document.getElementById('popupSukses').classList.remove('hidden');
                 } else alert("Gagal menyimpan ke server.");
             } catch (err) { alert("Terjadi kesalahan sistem pengiriman."); } finally { btn.disabled = false; btn.innerText = "KIRIM LAPORAN"; }
         }
 
-        function resetSemuaData() { document.getElementById('popupSukses').classList.add('hidden'); document.getElementById('kalkulasiContent').classList.add('hidden'); document.getElementById('picPenerima').selectedIndex = 0; document.getElementById('picPemberi').selectedIndex = 0; document.getElementById('containerTanggal').innerHTML = `<input type="date" class="input-tgl w-full bg-gray-50 text-black rounded-lg p-2 text-sm border border-gray-300 focus:outline-none focus:border-orange-500">`; document.getElementById('containerPengeluaran').innerHTML = ""; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function resetSemuaData() { document.getElementById('popupSukses').classList.add('hidden'); document.getElementById('kalkulasiContent').classList.add('hidden'); document.getElementById('picPenerima').selectedIndex = 0; document.getElementById('picPemberi').selectedIndex = 0; document.getElementById('containerTanggal').innerHTML = `<input type="date" class="input-tgl w-full bg-[#111111] text-white rounded-lg p-2 text-sm border border-emas focus:outline-none">`; document.getElementById('containerPengeluaran').innerHTML = ""; window.scrollTo({ top: 0, behavior: 'smooth' }); }
     </script>
 </body>
 </html>
